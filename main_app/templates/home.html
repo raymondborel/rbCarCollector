@@ -11,7 +11,7 @@
             <div class="carmodel">
                 <span>{{forloop.counter}}</span>
                 <span><b>{{carmodel.name}}</b></span>
-                <span>{{carmodel.image}}</span>
+                <span>{{carmodel.country}}</span>
                 <span>
                     <a href="{% url 'collection_carmodel_assoc' collection.pk carmodel.pk %}?assoc=remove"
                         class="button is-danger is-outlined">
