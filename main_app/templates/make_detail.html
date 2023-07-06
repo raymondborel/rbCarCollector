@@ -1,0 +1,107 @@
+{% extends 'base.html' %} 
+{% block content %}
+<div class="detail__img">
+    <img src="{{make.image}}" alt="{{make.name}}" />
+</div>
+<div class="detail__name">
+    <h1 class="title">{{make.name}}</h1>
+</div>
+
+<div class="detail__container">
+    <!-- inside container -->
+    <div class="detail__songs mb-5">     
+    <!-- ^CLASS NAME IS STILL SONGS FOR CSS -->
+    <h3 class="title is-3">Car Models</h3>
+    <form class="mb-5" action="{% url 'carmodel_create' make.pk %}" method="post">
+        {% csrf_token %}
+        <div class="field has-addons">
+            <div class="control">
+                <input
+                    class="input"
+                    type="text"
+                    name="name"
+                    placeholder="Name"
+                    required
+                />
+            </div>
+            <div class="control">
+                <input
+                    class="input"
+                    type="number"
+                    name="price"
+                    placeholder="Price"
+                    min="1"
+                    required
+                />
+            </div>
+            <div class="control">
+                <input
+                    class="input"
+                    type="text"
+                    name="image"
+                    placeholder="Image URL"
+                    required
+                />
+            </div>
+            <div class="control">
+                <input class="button is-primary" type="submit" value="Add Model" />
+            </div>
+        </div>
+    </form>
+    {% for carmodel in make.carmodels.all %}
+    <div class="song">
+        <span>{{forloop.counter}}</span>
+        <span><b>{{carmodel.name}}</b></span>
+        <span>{{carmodel.formatted_price}}</span>
+    </div>
+    <div class="card-image">
+        <img src="{{carmodel.image}}">
+    </div>
+    <span>
+        <div class="dropdown">
+            <div class="dropdown-trigger">
+                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                    <span>Add to Collection</span>
+                    <span class="icon is-small">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                <div class="dropdown-content">
+                    {% for collection in collections %}
+                        <a href="{% url 'collection_carmodel_assoc' collection.pk carmodel.pk %}?assoc=add"
+                           class="dropdown-item">{{ collection.title }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </span>
+    {% empty %}
+    <article class="message">
+        <div class="message-header">
+            <p>No carmodels Available</p>
+        </div>
+    </article>
+    {% endfor %}
+    </div>
+    <!--  above about section  -->
+    <div class="buttons">
+        <a href="{% url 'make_update' make.pk %}" class="button is-info"> Updates
+            <span class="icon">
+                <i class="fas fa-edit"></i>
+            </span>
+        </a>
+        <a href="{% url 'make_delete' make.pk %}" class="button is-danger">
+            <span class="icon">
+                <i class="fas fa-trash-alt"></i>
+            </span>
+        </a>
+    </div>
+    <div class="detail__about">
+        <h4 class="title is-4">About</h4>
+        <p>{{make.country}}</p>
+    </div>
+</div>
+
+{% endblock %}

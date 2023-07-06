@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="home__collections">
+    {% for collection in collections %}
+    <div class="collection mb-5">
+        <h3 class="title is-3 has-text-success">{{collection.title}}</h3>
+        <hr />
+        {% for carmodel in collection.carmodels.all %}
+            <div class="carmodel">
+                <span>{{forloop.counter}}</span>
+                <span><b>{{carmodel.name}}</b></span>
+                <span>{{carmodel.image}}</span>
+                <span>
+                    <a href="{% url 'collection_carmodel_assoc' collection.pk carmodel.pk %}?assoc=remove"
+                        class="button is-danger is-outlined">
+                        <span class="icon is-small">
+                            <i class="fas fa-times"></i>
+                        </span>
+                    </a>
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+        {% empty %} 
+        <div class="collection mb-5">"There are no carmodels in this collection"</div>
+        {% endfor %}
+</div>
+{% endblock %}
